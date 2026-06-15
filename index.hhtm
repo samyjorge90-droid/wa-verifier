@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WA Verifier Pro - Verificador de Números WhatsApp</title>
+    <!-- Tailwind CSS para estilização rápida e responsiva -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js para gráficos de desempenho em tempo real -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eefcf7',
+                            100: '#d3f7ea',
+                            500: '#00a884', // Cor clássica do WhatsApp
+                            600: '#008f70',
+                            700: '#00755c',
+                        },
+                        darkBg: '#0b141a', // WhatsApp Web Dark Background
+                        panelBg: '#111b21',
+                        cardBg: '#202c33',
+                        borderBg: '#2a3942',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilo personalizado da barra de rolagem (Scrollbar) idêntico ao WhatsApp Web */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111b21;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #374248;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4f5d64;
+        }
+    </style>
+</head>
+<body class="bg-darkBg text-slate-100 min-h-screen font-sans flex flex-col justify-between">
+
+    <!-- Cabeçalho / Barra de Navegação -->
+    <header class="bg-panelBg border-b border-borderBg px-6 py-4 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-brand-500 p-2 rounded-lg text-white">
+                    <!-- Ícone do WhatsApp em SVG -->
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.725 1.451 5.486.002 9.951-4.444 9.954-9.917.001-2.652-1.026-5.143-2.894-7.016-1.868-1.872-4.354-2.903-7.008-2.904-5.492 0-9.956 4.446-9.959 9.92-.001 1.905.488 3.766 1.417 5.385l-.973 3.548 3.643-.956zm11.39-5.541c-.328-.164-1.94-.957-2.242-1.067-.302-.11-.522-.164-.741.164-.22.328-.849 1.067-1.041 1.286-.192.219-.384.246-.712.081-1.353-.678-2.247-1.192-3.14-2.718-.236-.405.236-.376.674-1.25.076-.153.038-.287-.019-.396-.057-.11-.522-1.259-.716-1.724-.189-.456-.381-.393-.522-.4l-.445-.008c-.153 0-.402.058-.613.287-.211.23-.805.787-.805 1.918s.824 2.219.939 2.373c.115.153 1.622 2.478 3.93 3.475.55.237.978.379 1.313.485.552.175 1.054.15 1.451.091.442-.066 1.353-.553 1.543-1.088.19-.534.19-.991.133-1.087-.057-.095-.211-.153-.539-.317z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight">WA Verifier Pro</h1>
+                    <p class="text-xs text-slate-400">Verificação de Contactos WhatsApp em Lote</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-brand-500/10 text-brand-500 border border-brand-500/20">
+                    <span class="w-2 h-2 mr-1.5 bg-brand-500 rounded-full animate-ping"></span>
+                    Pronto para funcionar
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Grelha Principal de Conteúdo -->
+    <main class="max-w-7xl w-full mx-auto px-4 py-6 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Coluna Esquerda: Painel de Controlo & Inputs -->
+        <section class="lg:col-span-5 flex flex-col gap-6">
+            
+            <!-- Passo 1: Configuração do Modo de Funcionamento -->
+            <div class="bg-panelBg rounded-xl border border-borderBg p-5 shadow-sm">
+                <h2 class="text-md font-semibold mb-3 flex items-center gap-2 text-brand-500">
+                    <span class="flex items-center justify-center w-6 h-6 rounded-full bg-brand-500 text-white text-xs">1</span>
+                    Configuração do Modo de Funcionamento
+                </h2>
+                
+                <div class="grid grid-cols-2 gap-2 mb-4">
+                    <button id="btn-mode-sim" onclick="setMode('sim')" class="py-2.5 px-3 rounded-lg text-sm font-semibold border transition-all flex flex-col items-center justify-center gap-1 bg-brand-500/10 border-brand-500 text-brand-500">
+                        <span>🧪 Modo Simulação</span>
+                        <span class="text-[10px] font-normal opacity-80">Testar sem custos</span>
+                    </button>
+                    <button id="btn-mode-api" onclick="setMode('api')" class="py-2.5 px-3 rounded-lg text-sm font-semibold border transition-all flex flex-col items-center justify-center gap-1 bg-cardBg border-borderBg text-slate-300 hover:border-slate-600">
+                        <span>🔌 Conexão API Real</span>
+                        <span class="text-[10px] font-normal opacity-80">Chamar endpoint real</span>
+                    </button>
+                </div>
+
+                <!-- Configurações de API (Escondido por padrão) -->
+                <div id="api-config-panel" class="hidden space-y-3 pt-3 border-t border-borderBg/50">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Tipo de Integração / API</label>
+                        <select id="api-provider" onchange="applyProviderPreset()" class="w-full bg-cardBg border border-borderBg rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-brand-500">
+                            <option value="evolution">Evolution API (Recomendada)</option>
+                            <option value="zapi">Z-API</option>
+                            <option value="custom">Customizada (Webhook/Qualquer API)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">URL da API / Endpoint</label>
+                        <input id="api-url" type="text" value="http://localhost:8080/chat/checkNumberStatus/" class="w-full bg-cardBg border border-borderBg rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-brand-500" placeholder="https://api.seudominio.com/verificar">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1">Método HTTP</label>
+                            <select id="api-method" class="w-full bg-cardBg border border-borderBg rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-brand-500">
+                                <option value="POST">POST</option>
+                                <option value="GET">GET</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1">Intervalo (Segundos)</label>
+                            <input id="api-delay" type="number" min="0.5" step="0.5" value="1.5" class="w-full bg-cardBg border border-borderBg rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-brand-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Headers / Cabeçalho de Autenticação (JSON)</label>
+                        <textarea id="api-headers" rows="2" class="w-full font-mono text-xs bg-cardBg border border-borderBg rounded-lg px-3 py-2 text-slate-300 focus:outline-none focus:border-brand-500" placeholder='{ "apikey": "SUA_API_KEY_AQUI" }'>{ "apikey": "SUA_API_KEY_AQUI" }</textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Estrutura de resposta esperada</label>
+                        <div class="text-[11px] text-slate-400 bg-cardBg/60 p-2.5 rounded border border-borderBg/50 leading-relaxed">
+                            <span class="text-brand-500 font-semibold">Evolution:</span> Procura por <code class="bg-darkBg px-1 py-0.5 rounded text-rose-400">"exists": true</code> no retorno.<br>
+                            <span class="text-brand-500 font-semibold">Z-API:</span> Procura por <code class="bg-darkBg px-1 py-0.5 rounded text-rose-400">"exists": true</code> ou <code class="bg-darkBg px-1 py-0.5 rounded text-rose-400">"zap": true</code>.<br>
+                            <span class="text-brand-500 font-semibold">Custom:</span> Garanta que a resposta retorne um booleano positivo.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configurações de Simulação -->
+                <div id="sim-config-panel" class="space-y-3 pt-3 border-t border-borderBg/50">
+                    <div class="flex justify-between items-center text-xs font-medium text-slate-400">
+                        <span>Taxa de Sucesso Estimada:</span>
+                        <span id="label-sim-ratio" class="text-brand-500 font-bold">75%</span>
+                    </div>
+                    <input id="sim-ratio" type="range" min="10" max="100" value="75" oninput="document.getElementById('label-sim-ratio').innerText = this.value + '%'" class="w-full accent-brand-500 bg-cardBg h-2 rounded-lg appearance-none cursor-pointer">
+                    <p class="text-[11px] text-slate-400 leading-relaxed">
+                        Este modo simula pedidos à rede do WhatsApp com atrasos humanos realistas para demonstrar o fluxo visual e a validação.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Passo 2: Entrada de Contactos -->
+            <div class="bg-panelBg rounded-xl border border-borderBg p-5 flex-grow flex flex-col gap-4 shadow-sm">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-md font-semibold flex items-center gap-2 text-brand-500">
+                        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-brand-500 text-white text-xs">2</span>
+                        Lista de Contactos
+                    </h2>
+                    <button onclick="loadSampleNumbers()" class="text-xs text-brand-500 hover:text-brand-600 font-medium underline">
+                        Carregar Exemplo
+                    </button>
+                </div>
+
+                <!-- Auxiliares de Formatação -->
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[11px] text-slate-400 mb-1">Indicativo Padrão (Falta DDI)</label>
+                        <input id="default-ddi" type="text" value="+351" class="w-full text-center bg-cardBg border border-borderBg rounded-lg px-2 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-brand-500" placeholder="+351">
+                    </div>
+                    <div class="flex flex-col justify-end">
+                        <label class="flex items-center gap-2 text-[11px] text-slate-400 cursor-pointer h-full py-2">
+                            <input id="check-br9" type="checkbox" checked class="rounded bg-cardBg border-borderBg text-brand-500 focus:ring-0 accent-brand-500">
+                            <span>Ajustar 9º Dígito (BR)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Área de introdução de texto -->
+                <div class="relative flex-grow min-h-[160px] flex flex-col">
+                    <textarea id="numbers-input" oninput="updateInputCounter()" class="w-full flex-grow bg-cardBg border border-borderBg rounded-lg p-3 text-sm font-mono text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500" placeholder="Cole os números aqui (um por linha ou separados por vírgula).&#10;Exemplos:&#10;+351 912 345 678&#10;961234567&#10;+55 (11) 99999-9999"></textarea>
+                    <!-- Contador dinâmico de linhas -->
+                    <span id="input-counter" class="absolute bottom-2 right-3 text-[10px] text-slate-500 bg-darkBg/80 px-2 py-0.5 rounded border border-borderBg/30">0 contactos detetados</span>
+                </div>
+
+                <!-- Zona de Upload de Ficheiro com Drag & Drop -->
+                <div id="drop-zone" class="border border-dashed border-borderBg hover:border-brand-500/40 rounded-lg p-3 transition-colors bg-cardBg/40 text-center cursor-pointer relative">
+                    <input type="file" id="file-uploader" accept=".txt,.csv" onchange="handleFileUpload(event)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                    <div class="flex items-center justify-center gap-2 text-xs text-slate-400">
+                        <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                        <span>Arraste ou clique para carregar <strong class="text-slate-300">.TXT</strong> ou <strong class="text-slate-300">.CSV</strong></span>
+                    </div>
+                </div>
+
+                <!-- Botão de Ação Principal -->
+                <button id="btn-start" onclick="startVerification()" class="w-full bg-brand-500 hover:bg-brand-600 active:scale-[0.98] transition-all py-3.5 rounded-lg font-bold text-white shadow-lg shadow-brand-500/10 flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Iniciar Verificação em Massa
+                </button>
+            </div>
+        </section>
+
+        <!-- Coluna Direita: Resultados em Tempo Real & Estatísticas -->
+        <section class="lg:col-span-7 flex flex-col gap-6">
+            
+            <!-- Painel de Estatísticas e Gráfico Dinâmico -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                <!-- Blocos numéricos -->
+                <div class="md:col-span-8 grid grid-cols-2 gap-4">
+                    <div class="bg-panelBg p-4 rounded-xl border border-borderBg flex flex-col justify-between shadow-sm relative overflow-hidden">
+                        <span class="text-xs font-semibold text-slate-400">Total Importado</span>
+                        <span id="stat-total" class="text-3xl font-extrabold text-white mt-1">0</span>
+                        <div class="absolute bottom-0 left-0 h-1 w-full bg-slate-500/30"></div>
+                    </div>
+
+                    <div class="bg-panelBg p-4 rounded-xl border border-borderBg flex flex-col justify-between shadow-sm relative overflow-hidden">
+                        <span class="text-xs font-semibold text-slate-400 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-brand-500"></span> Ativos no WA
+                        </span>
+                        <span id="stat-valid" class="text-3xl font-extrabold text-brand-500 mt-1">0</span>
+                        <div class="absolute bottom-0 left-0 h-1 w-full bg-brand-500"></div>
+                    </div>
+
+                    <div class="bg-panelBg p-4 rounded-xl border border-borderBg flex flex-col justify-between shadow-sm relative overflow-hidden">
+                        <span class="text-xs font-semibold text-slate-400 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-rose-500"></span> Sem WhatsApp
+                        </span>
+                        <span id="stat-invalid" class="text-3xl font-extrabold text-rose-500 mt-1">0</span>
+                        <div class="absolute bottom-0 left-0 h-1 w-full bg-rose-500"></div>
+                    </div>
+
+                    <div class="bg-panelBg p-4 rounded-xl border border-borderBg flex flex-col justify-between shadow-sm relative overflow-hidden">
+                        <span class="text-xs font-semibold text-slate-400 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-amber-500"></span> Erros / Falhas
+                        </span>
+                        <span id="stat-errors" class="text-3xl font-extrabold text-amber-500 mt-1">0</span>
+                        <div class="absolute bottom-0 left-0 h-1 w-full bg-amber-500"></div>
+                    </div>
+                </div>
+
+                <!-- Gráfico de Rosca Interativo -->
+                <div class="md:col-span-4 bg-panelBg p-4 rounded-xl border border-borderBg flex flex-col items-center justify-center relative shadow-sm">
+                    <div class="w-full h-28 relative">
+                        <canvas id="stats-chart"></canvas>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-2">
+                            <span id="chart-percentage" class="text-lg font-black text-brand-500">0%</span>
+                            <span class="text-[9px] text-slate-400 uppercase tracking-widest">Sucesso</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Painel de Monitorização do Processamento -->
+            <div class="bg-panelBg rounded-xl border border-borderBg p-5 flex-grow flex flex-col gap-4 shadow-sm min-h-[400px]">
+                
+                <!-- Progresso / Cabeçalho -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <div>
+                        <h3 class="font-bold text-md flex items-center gap-2">
+                            <span>Processamento de Contactos</span>
+                            <span id="processing-badge" class="hidden text-[10px] bg-brand-500/20 text-brand-500 px-2 py-0.5 rounded-full uppercase tracking-wider font-extrabold animate-pulse">A Processar</span>
+                        </h3>
+                        <p id="stat-ratio-percent" class="text-xs text-slate-400 mt-0.5">Sem progresso ativo</p>
+                    </div>
+                    
+                    <!-- Controlos de Ação -->
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <button id="btn-pause" onclick="pauseVerification()" class="hidden text-xs bg-cardBg border border-borderBg hover:bg-slate-700 text-slate-300 font-semibold px-3 py-2 rounded-lg transition-all flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Pausar
+                        </button>
+                        <button id="btn-stop-verif" onclick="stopVerificationFromRunning()" class="hidden text-xs bg-rose-500/15 border border-rose-500/30 hover:bg-rose-500/30 text-rose-400 font-semibold px-3 py-2 rounded-lg transition-all flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg> Parar
+                        </button>
+                        <div class="relative inline-block text-left ml-auto sm:ml-0" id="export-dropdown-container">
+                            <button id="btn-export" onclick="toggleExportMenu()" class="text-xs bg-brand-500 hover:bg-brand-600 disabled:opacity-40 text-white font-semibold px-4 py-2.5 rounded-lg transition-all flex items-center gap-1.5 shadow" disabled>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                Exportar
+                            </button>
+                            <!-- Dropdown de Exportação -->
+                            <div id="export-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-cardBg border border-borderBg rounded-lg shadow-xl z-50 py-1 font-medium text-xs">
+                                <button onclick="exportData('all')" class="w-full text-left px-4 py-2.5 text-slate-200 hover:bg-brand-500/10 hover:text-brand-500 transition-colors">📂 Exportar Todos (CSV)</button>
+                                <button onclick="exportData('valid')" class="w-full text-left px-4 py-2.5 text-brand-500 hover:bg-brand-500/10 transition-colors">✅ Só WhatsApp (CSV)</button>
+                                <button onclick="exportData('invalid')" class="w-full text-left px-4 py-2.5 text-rose-400 hover:bg-rose-500/10 transition-colors">❌ Só Sem WA (CSV)</button>
+                                <button onclick="exportData('txt')" class="w-full text-left px-4 py-2.5 text-slate-300 hover:bg-brand-500/10 transition-colors">📄 Apenas Números (TXT)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Barra de Progresso Lineal -->
+                <div class="w-full bg-cardBg rounded-full h-3 overflow-hidden border border-borderBg">
+                    <div id="main-progress-bar" class="bg-brand-500 h-full w-0 transition-all duration-300"></div>
+                </div>
+
+                <!-- Métricas de Velocidade e Estimativa de Tempo (ETA) -->
+                <div id="performance-metrics" class="hidden flex justify-between items-center text-[11px] bg-cardBg/40 border border-borderBg/50 p-2.5 rounded-lg text-slate-400">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+                        <span>Velocidade: <strong id="metric-speed" class="text-slate-200">0</strong> verif./min</span>
+                    </div>
+                    <div>
+                        <span>Tempo Restante Estimado: <strong id="metric-eta" class="text-brand-500">--:--</strong></span>
+                    </div>
+                </div>
+
+                <!-- Filtros e Barra de Pesquisa -->
+                <div class="flex flex-col sm:flex-row gap-3 items-center justify-between pt-2">
+                    <div class="flex items-center gap-1 bg-cardBg p-1 border border-borderBg rounded-lg w-full sm:w-auto">
+                        <button onclick="setFilter('all')" id="filter-all" class="text-xs font-semibold px-3 py-1.5 rounded-md bg-brand-500 text-white transition-all">Todos</button>
+                        <button onclick="setFilter('valid')" id="filter-valid" class="text-xs font-semibold px-3 py-1.5 rounded-md text-slate-400 hover:text-slate-200 transition-all">Válidos</button>
+                        <button onclick="setFilter('invalid')" id="filter-invalid" class="text-xs font-semibold px-3 py-1.5 rounded-md text-slate-400 hover:text-slate-200 transition-all">Inválidos</button>
+                    </div>
+
+                    <div class="relative w-full sm:w-64">
+                        <input id="search-input" oninput="applyFilters()" type="text" placeholder="Filtrar número..." class="w-full bg-cardBg border border-borderBg rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-brand-500">
+                        <div class="absolute left-3 top-2.5 text-slate-500">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contentor da Tabela de Resultados -->
+                <div class="flex-grow overflow-y-auto max-h-[350px] border border-borderBg rounded-lg bg-cardBg/40">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-cardBg border-b border-borderBg sticky top-0 text-slate-400">
+                                <th class="p-3 font-semibold">Número Original</th>
+                                <th class="p-3 font-semibold">Número Formatado</th>
+                                <th class="p-3 font-semibold">Estado do WhatsApp</th>
+                                <th class="p-3 font-semibold text-right">Velocidade / Retorno</th>
+                            </tr>
+                        </thead>
+                        <tbody id="results-table-body" class="divide-y divide-borderBg/40">
+                            <tr>
+                                <td colspan="4" class="p-8 text-center text-slate-500">
+                                    Nenhum contacto processado até ao momento. Adicione números à esquerda e clique para iniciar.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Sistema de Avisos e Notificações Flutuantes (Toasts) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
+
+    <!-- Rodapé -->
+    <footer class="bg-panelBg border-t border-borderBg px-6 py-4 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
+            <p>© 2026 WA Verifier Pro. Desenvolvido para automação e higienização ágil de listas.</p>
+            <div class="flex items-center gap-4">
+                <span class="text-emerald-500">Seguro &amp; Regulado</span>
+                <span class="text-slate-600">|</span>
+                <span class="text-slate-400">Proteja as suas chaves de acesso privadas</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- CONSTANTES E GESTÃO DE ESTADO ---
+        let verificationQueue = [];
+        let completedList = [];
+        let isRunning = false;
+        let isPaused = false;
+        let currentMode = 'sim'; 
+        let currentFilter = 'all'; 
+        let statsChart = null;
+
+        // Métricas de velocidade
+        let startTime = null;
+        let processedCountInSession = 0;
+
+        // Modelos de configuração para provedores comuns de API
+        const apiPresets = {
+            evolution: {
+                url: "http://localhost:8080/chat/checkNumberStatus/",
+                method: "POST",
+                headers: '{\n  "Content-Type": "application/json",\n  "apikey": "SUA_API_KEY_AQUI"\n}',
+                delay: 1.5
+            },
+            zapi: {
+                url: "https://api.z-api.io/instances/SUA_INSTANCIA/token/SEU_TOKEN/phone-exists/{number}",
+                method: "GET",
+                headers: '{\n  "Client-Token": "SEU_CLIENT_TOKEN_OPCIONAL"\n}',
+                delay: 1.5
+            },
+            custom: {
+                url: "https://api.seudominio.com/verificar?phone={number}",
+                method: "POST",
+                headers: '{\n  "Authorization": "Bearer TOKEN_AQUI"\n}',
+                delay: 2.0
+            }
+        };
+
+        // --- INICIALIZAÇÃO E EVENTOS ---
+        window.onload = function() {
+            setMode('sim');
+            applyProviderPreset();
+            initChart();
+            setupDragAndDrop();
+        };
+
+        // Suporte para arrastar e soltar ficheiros
+        function setupDragAndDrop() {
+            const dropZone = document.getElementById('drop-zone');
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('border-brand-500', 'bg-brand-500/10');
+            });
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('border-brand-500', 'bg-brand-500/10');
+            });
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('border-brand-500', 'bg-brand-500/10');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    document.getElementById('file-uploader').files = files;
+                    handleFileUpload({ target: { files } });
+                }
+            });
+        }
+
+        // Inicialização do Gráfico do Chart.js
+        function initChart() {
+            const ctx = document.getElementById('stats-chart').getContext('2d');
+            statsChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Ativo', 'Ausente', 'Falhas', 'Pendente'],
+                    datasets: [{
+                        data: [0, 0, 0, 1], // Inicia neutro
+                        backgroundColor: ['#00a884', '#f43f5e', '#f59e0b', '#374248'],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ${context.label}: ${context.raw}`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '75%',
+                    animation: { duration: 400 }
+                }
+            });
+        }
+
+        // Atualizar o contador dinâmico de linhas
+        function updateInputCounter() {
+            const text = document.getElementById('numbers-input').value;
+            const count = text.split(/[\n,;]+/).map(n => n.trim()).filter(n => n.length > 0).length;
+            document.getElementById('input-counter').innerText = `${count} contacto(s) detetado(s)`;
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            const btnSim = document.getElementById('btn-mode-sim');
+            const btnApi = document.getElementById('btn-mode-api');
+            const panelSim = document.getElementById('sim-config-panel');
+            const panelApi = document.getElementById('api-config-panel');
+
+            if (mode === 'sim') {
+                btnSim.className = "py-2.5 px-3 rounded-lg text-sm font-semibold border transition-all flex flex-col items-center justify-center gap-1 bg-brand-500/10 border-brand-500 text-brand-500";
+                btnApi.className = "py-2.5 px-3 rounded-lg text-sm font-semibold border transition-all flex flex-col items-center justify-center gap-1 bg-cardBg border-borderBg text-slate-300 hover:border-slate-600";
+                panelSim.classList.remove('hidden');
+                panelApi.classList.add('hidden');
+                showToast("Modo Simulação Ativado! Perfeito para testes rápidos.", "info");
+            } else {
+                btnSim.className = "py-2.5 px-3 rounded-lg text-sm font-semibold border transition-all flex flex-col items-center justify-center gap-1 bg-cardBg border-borderBg text-slate-300 hover:border-slate-600";
+                btnApi.className = "py-2.5 px-3 rounded-lg text-sm font-semibold border transition-all flex flex-col items-center justify-center gap-1 bg-brand-500/10 border-brand-500 text-brand-500";
+                panelSim.classList.add('hidden');
+                panelApi.classList.remove('hidden');
+                showToast("Modo API Ativado! Configure o seu endpoint antes de arrancar.", "warning");
+            }
+        }
+
+        function applyProviderPreset() {
+            const provider = document.getElementById('api-provider').value;
+            const preset = apiPresets[provider];
+            if (preset) {
+                document.getElementById('api-url').value = preset.url;
+                document.getElementById('api-method').value = preset.method;
+                document.getElementById('api-headers').value = preset.headers;
+                document.getElementById('api-delay').value = preset.delay;
+            }
+        }
+
+        function showToast(message, type = "success") {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let bgClass = "bg-brand-600";
+            let icon = "✓";
+            if (type === "error") { bgClass = "bg-rose-600"; icon = "✕"; }
+            if (type === "warning") { bgClass = "bg-amber-600"; icon = "⚠️"; }
+            if (type === "info") { bgClass = "bg-sky-600"; icon = "ℹ️"; }
+
+            toast.className = `${bgClass} text-white px-4 py-3 rounded-lg shadow-xl text-xs flex items-center gap-2 transform translate-y-2 opacity-0 transition-all duration-300 max-w-sm`;
+            toast.innerHTML = `<span class="font-bold flex items-center justify-center w-5 h-5 bg-white/20 rounded-full">${icon}</span> <span>${message}</span>`;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 50);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        function loadSampleNumbers() {
+            const sample = [
+                "+351 912 345 678",
+                "961 234 567",
+                "+351 210 000 000 (Fixo)",
+                "938887776",
+                "+55 (11) 98888-7777",
+                "1197777-6666",
+                "Incorreto 123",
+                "5511955554444",
+                "9999-9999 (Inválido)",
+                "+351 919 999 999"
+            ];
+            document.getElementById('numbers-input').value = sample.join("\n");
+            updateInputCounter();
+            showToast("Contactos de exemplo carregados!", "success");
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                const lines = text.split(/\r?\n/).map(line => line.trim()).filter(line => line.length > 0);
+                
+                if (lines.length > 0) {
+                    document.getElementById('numbers-input').value = lines.join("\n");
+                    updateInputCounter();
+                    showToast(`${lines.length} contactos importados do ficheiro!`, "success");
+                } else {
+                    showToast("O ficheiro carregado parece estar vazio.", "error");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // --- SISTEMA DE FORMATAÇÃO INTELIGENTE ---
+        function cleanAndFormatNumber(raw) {
+            let cleaned = raw.trim().replace(/[^\d+]/g, '');
+            
+            if (cleaned.length === 0) {
+                return { original: raw, formatted: '', valid: false, error: 'Sem dígitos válidos' };
+            }
+
+            const defaultDdi = document.getElementById('default-ddi').value.replace(/[^\d]/g, '') || '351';
+            const adjustBr9 = document.getElementById('check-br9').checked;
+
+            if (cleaned.startsWith('+')) {
+                cleaned = cleaned.substring(1);
+            }
+
+            // Tratamento geral de indicativos de país em falta
+            if (!cleaned.startsWith(defaultDdi) && cleaned.length >= 9 && cleaned.length <= 11) {
+                cleaned = defaultDdi + cleaned;
+            }
+
+            // Tratamento especial para o Brasil (9º dígito móvel)
+            if (cleaned.startsWith('55')) {
+                let ddd = cleaned.substring(2, 4);
+                let body = cleaned.substring(4);
+
+                if (adjustBr9) {
+                    if (body.length === 8 && ['9', '8', '7', '6'].includes(body[0])) {
+                        body = '9' + body;
+                    }
+                }
+                cleaned = '55' + ddd + body;
+            }
+
+            return {
+                original: raw,
+                formatted: cleaned,
+                valid: cleaned.length >= 9 && cleaned.length <= 15
+            };
+        }
+
+        // --- MOTOR DE PROCESSAMENTO ---
+        function startVerification() {
+            if (isRunning) {
+                showToast("Já existe uma verificação a decorrer!", "warning");
+                return;
+            }
+
+            const rawText = document.getElementById('numbers-input').value;
+            if (!rawText.trim()) {
+                showToast("Insira pelo menos um contacto para validar!", "error");
+                return;
+            }
+
+            const rawNumbers = rawText.split(/[\n,;]+/).map(n => n.trim()).filter(n => n.length > 0);
+            verificationQueue = rawNumbers.map(num => cleanAndFormatNumber(num));
+            
+            if (verificationQueue.length === 0) {
+                showToast("Não encontrámos contactos elegíveis na sua lista.", "error");
+                return;
+            }
+
+            // Resetar Métricas e Estado
+            completedList = [];
+            isRunning = true;
+            isPaused = false;
+            startTime = Date.now();
+            processedCountInSession = 0;
+            
+            // Alterações na Interface
+            document.getElementById('processing-badge').classList.remove('hidden');
+            document.getElementById('performance-metrics').classList.remove('hidden');
+            document.getElementById('btn-pause').classList.remove('hidden');
+            document.getElementById('btn-stop-verif').classList.remove('hidden');
+            document.getElementById('btn-pause').innerText = "Pausar";
+            document.getElementById('btn-export').disabled = true;
+            
+            updateStatsUI();
+            renderTable();
+            processNext();
+        }
+
+        function pauseVerification() {
+            if (!isRunning) return;
+            isPaused = !isPaused;
+            const btnPause = document.getElementById('btn-pause');
+            
+            if (isPaused) {
+                btnPause.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Retomar`;
+                showToast("Processamento Pausado.", "info");
+                document.getElementById('processing-badge').classList.add('hidden');
+            } else {
+                btnPause.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Pausar`;
+                document.getElementById('processing-badge').classList.remove('hidden');
+                showToast("A retomar verificação...", "success");
+                startTime = Date.now() - (processedCountInSession * 1000); // Ajusta o cronómetro para manter o ritmo correto
+                processNext();
+            }
+        }
+
+        function stopVerificationFromRunning() {
+            if (!isRunning) return;
+            verificationQueue = [];
+            isRunning = false;
+            isPaused = false;
+            finishVerification();
+            showToast("Verificação cancelada pelo utilizador.", "warning");
+        }
+
+        async function processNext() {
+            if (!isRunning || isPaused) return;
+
+            if (verificationQueue.length === 0) {
+                finishVerification();
+                return;
+            }
+
+            const activeItem = verificationQueue.shift();
+            activeItem.status = 'processing';
+            completedList.push(activeItem);
+            
+            processedCountInSession++;
+            updateStatsUI();
+            renderTable();
+
+            if (currentMode === 'sim') {
+                const simulatedDelay = Math.floor(Math.random() * 500) + 250; 
+                setTimeout(() => {
+                    const simRatio = parseInt(document.getElementById('sim-ratio').value);
+                    const isSuccess = activeItem.valid && (Math.random() * 100 <= simRatio);
+                    
+                    activeItem.status = isSuccess ? 'valid' : 'invalid';
+                    activeItem.responseTime = `${simulatedDelay}ms`;
+                    
+                    updateStatsUI();
+                    renderTable();
+                    processNext();
+                }, simulatedDelay);
+
+            } else {
+                const delayInSeconds = parseFloat(document.getElementById('api-delay').value) || 1;
+                
+                if (!activeItem.valid) {
+                    activeItem.status = 'invalid';
+                    activeItem.error = 'Indicativo/Tamanho inválido';
+                    updateStatsUI();
+                    renderTable();
+                    setTimeout(processNext, delayInSeconds * 1000);
+                    return;
+                }
+
+                try {
+                    const result = await makeRealApiRequest(activeItem.formatted);
+                    activeItem.status = result.exists ? 'valid' : 'invalid';
+                    if (result.error) {
+                        activeItem.status = 'error';
+                        activeItem.error = result.error;
+                    }
+                } catch (err) {
+                    activeItem.status = 'error';
+                    activeItem.error = err.message || 'Erro de rede';
+                }
+
+                updateStatsUI();
+                renderTable();
+                setTimeout(processNext, delayInSeconds * 1000);
+            }
+        }
+
+        // Requisições dinâmicas à API externa configurada
+        async function makeRealApiRequest(phoneNumber) {
+            const provider = document.getElementById('api-provider').value;
+            let url = document.getElementById('api-url').value;
+            const method = document.getElementById('api-method').value;
+            const rawHeaders = document.getElementById('api-headers').value;
+
+            url = url.replace('{number}', phoneNumber);
+
+            let headers = {};
+            try {
+                if (rawHeaders.trim()) {
+                    headers = JSON.parse(rawHeaders);
+                }
+            } catch (e) {
+                throw new Error("Formato JSON de Headers inválido");
+            }
+
+            let bodyConfig = null;
+            if (method === 'POST') {
+                headers['Content-Type'] = 'application/json';
+                if (provider === 'evolution') {
+                    bodyConfig = JSON.stringify({ "number": phoneNumber });
+                } else {
+                    bodyConfig = JSON.stringify({ "number": phoneNumber, "phone": phoneNumber });
+                }
+            }
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000); 
+
+            const response = await fetch(url, {
+                method: method,
+                headers: headers,
+                body: bodyConfig,
+                signal: controller.signal
+            });
+
+            clearTimeout(timeoutId);
+
+            if (!response.ok) {
+                return { exists: false, error: `Código HTTP ${response.status}` };
+            }
+
+            const data = await response.json();
+
+            if (provider === 'evolution') {
+                return { exists: !!(data.exists || data.numberExists || (data.status && data.status === 'exists')) };
+            } else if (provider === 'zapi') {
+                return { exists: !!(data.exists || data.zap || data.isWhatsApp) };
+            } else {
+                const hasExistence = data.exists === true || data.valid === true || data.whatsapp === true || data.status === "exists";
+                return { exists: hasExistence };
+            }
+        }
+
+        function finishVerification() {
+            isRunning = false;
+            document.getElementById('processing-badge').classList.add('hidden');
+            document.getElementById('btn-pause').classList.add('hidden');
+            document.getElementById('btn-stop-verif').classList.add('hidden');
+            document.getElementById('btn-export').disabled = false;
+            
+            const total = completedList.length;
+            const valid = completedList.filter(n => n.status === 'valid').length;
+            
+            showToast(`Processamento terminado! Encontrados ${valid} contactos ativos de ${total} submetidos.`, "success");
+            updateStatsUI();
+        }
+
+        // --- SISTEMA DE EXPORTAÇÃO (CSV/TXT) ---
+        function toggleExportMenu() {
+            const dropdown = document.getElementById('export-dropdown');
+            dropdown.classList.toggle('hidden');
+            
+            const handleOutsideClick = (e) => {
+                const container = document.getElementById('export-dropdown-container');
+                if (!container.contains(e.target)) {
+                    dropdown.classList.add('hidden');
+                    document.removeEventListener('click', handleOutsideClick);
+                }
+            };
+            
+            if (!dropdown.classList.contains('hidden')) {
+                setTimeout(() => {
+                    document.addEventListener('click', handleOutsideClick);
+                }, 100);
+            }
+        }
+
+        function exportData(type) {
+            let dataToExport = [];
+            let fileName = 'contactos_whatsapp';
+            
+            if (type === 'all') {
+                dataToExport = completedList;
+                fileName += '_todos.csv';
+            } else if (type === 'valid') {
+                dataToExport = completedList.filter(n => n.status === 'valid');
+                fileName += '_validos.csv';
+            } else if (type === 'invalid') {
+                dataToExport = completedList.filter(n => n.status === 'invalid');
+                fileName += '_invalidos.csv';
+            } else if (type === 'txt') {
+                dataToExport = completedList.filter(n => n.status === 'valid');
+                fileName += '_apenas_numeros.txt';
+            }
+
+            if (dataToExport.length === 0) {
+                showToast("Não existem dados para exportar com este critério.", "error");
+                return;
+            }
+
+            let fileContent = '';
+            
+            if (type === 'txt') {
+                fileContent = dataToExport.map(n => n.formatted).join('\n');
+            } else {
+                fileContent = 'Numero Original;Numero Formatado;Estado do WhatsApp;Anotacao\n';
+                fileContent += dataToExport.map(n => {
+                    return `"${n.original}";"${n.formatted}";"${n.status === 'valid' ? 'Ativo' : n.status === 'invalid' ? 'Ausente' : 'Falha'}";"${n.error || ''}"`;
+                }).join('\n');
+            }
+
+            const blob = new Blob([fileContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", fileName);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            document.getElementById('export-dropdown').classList.add('hidden');
+            showToast("Relatório descarregado com sucesso!", "success");
+        }
+
+        // --- ATUALIZAÇÕES VISUAIS DA INTERFACE (UI) ---
+        function setFilter(filter) {
+            currentFilter = filter;
+            const filters = ['all', 'valid', 'invalid'];
+            filters.forEach(f => {
+                const btn = document.getElementById(`filter-${f}`);
+                if (f === filter) {
+                    btn.className = "text-xs font-semibold px-3 py-1.5 rounded-md bg-brand-500 text-white transition-all";
+                } else {
+                    btn.className = "text-xs font-semibold px-3 py-1.5 rounded-md text-slate-400 hover:text-slate-200 transition-all";
+                }
+            });
+            applyFilters();
+        }
+
+        function applyFilters() {
+            renderTable();
+        }
+
+        function updateStatsUI() {
+            const totalInQueue = verificationQueue.length;
+            const totalProcessed = completedList.length;
+            const grandTotal = totalInQueue + totalProcessed;
+
+            const valid = completedList.filter(n => n.status === 'valid').length;
+            const invalid = completedList.filter(n => n.status === 'invalid').length;
+            const errors = completedList.filter(n => n.status === 'error').length;
+
+            document.getElementById('stat-total').innerText = grandTotal;
+            document.getElementById('stat-valid').innerText = valid;
+            document.getElementById('stat-invalid').innerText = invalid;
+            document.getElementById('stat-errors').innerText = errors;
+
+            // Progresso e estimativa temporal
+            if (grandTotal > 0) {
+                const percent = Math.round((totalProcessed / grandTotal) * 100);
+                document.getElementById('main-progress-bar').style.width = `${percent}%`;
+                
+                if (isRunning) {
+                    document.getElementById('stat-ratio-percent').innerText = `Verificado: ${totalProcessed} de ${grandTotal} (${percent}%) — Pendentes: ${totalInQueue}`;
+                    
+                    // Cálculo da velocidade de processamento e estimativa de término (ETA)
+                    const elapsedSeconds = (Date.now() - startTime) / 1000;
+                    const speedPerSec = processedCountInSession / (elapsedSeconds || 1);
+                    const speedPerMin = Math.round(speedPerSec * 60);
+                    const etaSeconds = speedPerSec > 0 ? Math.round(totalInQueue / speedPerSec) : 0;
+                    
+                    let etaText = '--:--';
+                    if (etaSeconds > 0) {
+                        const mins = Math.floor(etaSeconds / 60);
+                        const secs = etaSeconds % 60;
+                        etaText = `${mins}m ${secs}s`;
+                    }
+
+                    document.getElementById('metric-speed').innerText = speedPerMin;
+                    document.getElementById('metric-eta').innerText = etaText;
+                } else {
+                    document.getElementById('stat-ratio-percent').innerText = `Concluído: ${totalProcessed} contactos validados.`;
+                    document.getElementById('performance-metrics').classList.add('hidden');
+                }
+
+                // Cálculo da percentagem de sucesso sobre os válidos na rosca do gráfico
+                const successRatio = totalProcessed > 0 ? Math.round((valid / totalProcessed) * 100) : 0;
+                document.getElementById('chart-percentage').innerText = `${successRatio}%`;
+
+                // Atualizar o Gráfico de Rosca
+                if (statsChart) {
+                    statsChart.data.datasets[0].data = [valid, invalid, errors, totalInQueue];
+                    statsChart.data.datasets[0].backgroundColor = ['#00a884', '#f43f5e', '#f59e0b', '#2a3942'];
+                    statsChart.update();
+                }
+            } else {
+                document.getElementById('main-progress-bar').style.width = `0%`;
+                document.getElementById('stat-ratio-percent').innerText = "Sem progresso ativo";
+                document.getElementById('chart-percentage').innerText = "0%";
+                document.getElementById('performance-metrics').classList.add('hidden');
+
+                if (statsChart) {
+                    statsChart.data.datasets[0].data = [0, 0, 0, 1];
+                    statsChart.data.datasets[0].backgroundColor = ['#00a884', '#f43f5e', '#f59e0b', '#374248'];
+                    statsChart.update();
+                }
+            }
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('results-table-body');
+            const searchVal = document.getElementById('search-input').value.toLowerCase().trim();
+            
+            let filtered = completedList;
+
+            if (currentFilter === 'valid') {
+                filtered = filtered.filter(n => n.status === 'valid');
+            } else if (currentFilter === 'invalid') {
+                filtered = filtered.filter(n => n.status === 'invalid');
+            }
+
+            if (searchVal) {
+                filtered = filtered.filter(n => 
+                    n.original.toLowerCase().includes(searchVal) || 
+                    n.formatted.toLowerCase().includes(searchVal)
+                );
+            }
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="p-8 text-center text-slate-500">
+                            Nenhum contacto cumpre os critérios do filtro atual.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            // Exibir primeiro os contactos mais recentes no topo
+            const tableRows = [...filtered].reverse().map(item => {
+                let statusBadge = '';
+                
+                if (item.status === 'processing') {
+                    statusBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">🔍 A verificar...</span>`;
+                } else if (item.status === 'valid') {
+                    statusBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-brand-500/10 text-brand-500 border border-brand-500/20">✅ Ativo no WA</span>`;
+                } else if (item.status === 'invalid') {
+                    statusBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-rose-500/10 text-rose-500 border border-rose-500/20">❌ Ausente</span>`;
+                } else if (item.status === 'error') {
+                    statusBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/10 text-amber-500 border border-amber-500/20" title="${item.error || 'Erro'}">⚠️ Falha</span>`;
+                }
+
+                return `
+                    <tr class="hover:bg-cardBg/60 transition-colors">
+                        <td class="p-3 font-mono text-slate-300 max-w-[150px] truncate" title="${item.original}">${item.original}</td>
+                        <td class="p-3 font-mono text-brand-500">${item.formatted || '<span class="text-rose-500">Falha</span>'}</td>
+                        <td class="p-3">${statusBadge}</td>
+                        <td class="p-3 text-right text-[11px] text-slate-500 font-mono">
+                            ${item.error ? `<span class="text-rose-400 font-bold">${item.error}</span>` : item.responseTime || 'OK'}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = tableRows.join('');
+        }
+    </script>
+</body>
+</html>
