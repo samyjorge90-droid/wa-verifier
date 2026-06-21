@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WA Verifier Pro - Verificador de Números WhatsApp</title>
     
-    <!-- Configurações para Favicon e Ícones PWA -->
+    <!-- Configurações para Favicon e Ícones PWA - Mantendo o Ícone Holográfico 3D -->
     <link rel="icon" type="image/jpeg" href="Prompt_2_Transparent_glass_Wha_1.jpg">
     <link rel="apple-touch-icon" href="Prompt_2_Transparent_glass_Wha_1.jpg">
     
@@ -66,9 +66,11 @@
     <header class="bg-panelBg border-b border-borderBg px-6 py-4 sticky top-0 z-50 shadow-md">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <!-- Logótipo 3D Moderno da App com Fallback Automático em SVG -->
-                <div class="w-11 h-11 rounded-xl overflow-hidden shadow-lg border border-borderBg bg-cardBg flex items-center justify-center relative">
-                    <img id="app-logo" src="Prompt_2_Transparent_glass_Wha_1.jpg" alt="WA Verifier Pro Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.outerHTML='<div class=\'bg-brand-500 p-2 w-full h-full text-white flex items-center justify-center\'><svg class=\'w-6 h-6\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.725 1.451 5.486.002 9.951-4.444 9.954-9.917.001-2.652-1.026-5.143-2.894-7.016-1.868-1.872-4.354-2.903-7.008-2.904-5.492 0-9.956 4.446-9.959 9.92-.001 1.905.488 3.766 1.417 5.385l-.973 3.548 3.643-.956zm11.39-5.541c-.328-.164-1.94-.957-2.242-1.067-.302-.11-.522-.164-.741.164-.22.328-.849 1.067-1.041 1.286-.192.219-.384.246-.712.081-1.353-.678-2.247-1.192-3.14-2.718-.236-.405.236-.376.674-1.25.076-.153.038-.287-.019-.396-.057-.11-.522-1.259-.716-1.724-.189-.456-.381-.393-.522-.4l-.445-.008c-.153 0-.402.058-.613.287-.211.23-.805.787-.805 1.918s.824 2.219.939 2.373c.115.153 1.622 2.478 3.93 3.475.55.237.978.379 1.313.485.552.175 1.054.15 1.451.091.442-.066 1.353-.553 1.543-1.088.19-.534.19-.991.133-1.087-.057-.095-.211-.153-.539-.317z\'/></svg></div>'">
+                <!-- Logótipo Clássico do WhatsApp (Círculo verde #25D366 com telefone branco) -->
+                <div class="w-11 h-11 rounded-xl overflow-hidden shadow-lg flex items-center justify-center bg-[#25D366] text-white">
+                    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.725 1.451 5.486.002 9.951-4.444 9.954-9.917.001-2.652-1.026-5.143-2.894-7.016-1.868-1.872-4.354-2.903-7.008-2.904-5.492 0-9.956 4.446-9.959 9.92-.001 1.905.488 3.766 1.417 5.385l-.973 3.548 3.643-.956zm11.39-5.541c-.328-.164-1.94-.957-2.242-1.067-.302-.11-.522-.164-.741.164-.22.328-.849 1.067-1.041 1.286-.192.219-.384.246-.712.081-1.353-.678-2.247-1.192-3.14-2.718-.236-.405.236-.376.674-1.25.076-.153.038-.287-.019-.396-.057-.11-.522-1.259-.716-1.724-.189-.456-.381-.393-.522-.4l-.445-.008c-.153 0-.402.058-.613.287-.211.23-.805.787-.805 1.918s.824 2.219.939 2.373c.115.153 1.622 2.478 3.93 3.475.55.237.978.379 1.313.485.552.175 1.054.15 1.451.091.442-.066 1.353-.553 1.543-1.088.19-.534.19-.991.133-1.087-.057-.095-.211-.153-.539-.317z"/>
+                    </svg>
                 </div>
                 <div>
                     <h1 class="text-xl font-bold tracking-tight">WA Verifier Pro</h1>
@@ -595,7 +597,7 @@
             showToast("Todos os dados foram reiniciados com sucesso!", "info");
         }
 
-        // Atualizar o contador dinâmico de linhas e detetar duplicados
+        // --- ATUALIZAR CONTADOR DINÂMICO ---
         function updateInputCounter() {
             const text = document.getElementById('numbers-input').value;
             const rawNumbers = text.split(/[\n,;]+/).map(n => n.trim()).filter(n => n.length > 0);
@@ -718,19 +720,15 @@
 
         // --- SISTEMA DE CLASSIFICAÇÃO DE TIPO (MÓVEL OU FIXO) ---
         function classifyNumberType(formattedNum) {
-            // Se o número começa com 351 (Portugal)
             if (formattedNum.startsWith('351')) {
                 const rest = formattedNum.substring(3);
                 if (rest.startsWith('9')) return 'mobile';
                 if (rest.startsWith('2') || rest.startsWith('3')) return 'landline';
             } 
-            // Se o número começa com 55 (Brasil)
             else if (formattedNum.startsWith('55')) {
-                const rest = formattedNum.substring(4); // Remove 55 + DDD (2 digitos)
-                // Telemóveis no Brasil com 9º dígito têm corpo com 9 dígitos
+                const rest = formattedNum.substring(4); 
                 if (formattedNum.length === 13) return 'mobile';
                 if (formattedNum.length === 12) {
-                    // Telefones fixos costumam começar com 2, 3, 4, 5
                     if (['2','3','4','5'].includes(rest[0])) return 'landline';
                 }
             }
@@ -752,12 +750,10 @@
                 cleaned = cleaned.substring(1);
             }
 
-            // Tratamento geral de indicativos de país em falta
             if (!cleaned.startsWith(defaultDdi) && cleaned.length >= 9 && cleaned.length <= 11) {
                 cleaned = defaultDdi + cleaned;
             }
 
-            // Tratamento especial para o Brasil (9º dígito móvel)
             if (cleaned.startsWith('55')) {
                 let ddd = cleaned.substring(2, 4);
                 let body = cleaned.substring(4);
@@ -796,14 +792,13 @@
             const rawNumbers = rawText.split(/[\n,;]+/).map(n => n.trim()).filter(n => n.length > 0);
             const initialList = rawNumbers.map(num => cleanAndFormatNumber(num));
 
-            // REMOÇÃO DE DUPLICADOS: Guardar contactos limpos de forma eficiente
             const seen = new Set();
             const uniqueQueue = [];
             let duplicatesCount = 0;
 
             for (const item of initialList) {
                 if (!item.valid) {
-                    uniqueQueue.push(item); // Mantém inválidos para mostrar o erro visual
+                    uniqueQueue.push(item); 
                     continue;
                 }
                 if (seen.has(item.formatted)) {
@@ -825,14 +820,12 @@
                 showToast(`Análise: ${duplicatesCount} contacto(s) duplicado(s) removido(s) automaticamente!`, "info");
             }
 
-            // Resetar Métricas e Estado
             completedList = [];
             isRunning = true;
             isPaused = false;
             startTime = Date.now();
             processedCountInSession = 0;
             
-            // Alterações na Interface
             document.getElementById('processing-badge').classList.remove('hidden');
             document.getElementById('performance-metrics').classList.remove('hidden');
             document.getElementById('btn-pause').classList.remove('hidden');
@@ -858,7 +851,7 @@
                 btnPause.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Pausar`;
                 document.getElementById('processing-badge').classList.remove('hidden');
                 showToast("A retomar verificação...", "success");
-                startTime = Date.now() - (processedCountInSession * 1000); // Ajusta o cronómetro
+                startTime = Date.now() - (processedCountInSession * 1000); 
                 processNext();
             }
         }
@@ -932,7 +925,6 @@
             }
         }
 
-        // Requisições dinâmicas à API externa configurada
         async function makeRealApiRequest(phoneNumber) {
             const provider = document.getElementById('api-provider').value;
             let url = document.getElementById('api-url').value;
@@ -1000,7 +992,6 @@
             
             showToast(`Processamento terminado! Encontrados ${valid} contactos ativos de ${total} submetidos.`, "success");
             
-            // Ativa som de fim de lote
             playSuccessSound();
 
             updateStatsUI();
@@ -1092,7 +1083,6 @@
             applyFilters();
         }
 
-        // Aplicar as filtragens na tabela
         function applyFilters() {
             renderTable();
         }
@@ -1111,7 +1101,6 @@
             document.getElementById('stat-invalid').innerText = invalid;
             document.getElementById('stat-errors').innerText = errors;
 
-            // Progresso e estimativa temporal
             if (grandTotal > 0) {
                 const percent = Math.round((totalProcessed / grandTotal) * 100);
                 document.getElementById('main-progress-bar').style.width = `${percent}%`;
@@ -1119,7 +1108,6 @@
                 if (isRunning) {
                     document.getElementById('stat-ratio-percent').innerText = `Verificado: ${totalProcessed} de ${grandTotal} (${percent}%) — Pendentes: ${totalInQueue}`;
                     
-                    // Cálculo da velocidade de processamento e estimativa de término (ETA)
                     const elapsedSeconds = (Date.now() - startTime) / 1000;
                     const speedPerSec = processedCountInSession / (elapsedSeconds || 1);
                     const speedPerMin = Math.round(speedPerSec * 60);
@@ -1139,11 +1127,9 @@
                     document.getElementById('performance-metrics').classList.add('hidden');
                 }
 
-                // Cálculo da percentagem de sucesso sobre os válidos na rosca do gráfico
                 const successRatio = totalProcessed > 0 ? Math.round((valid / totalProcessed) * 100) : 0;
                 document.getElementById('chart-percentage').innerText = `${successRatio}%`;
 
-                // Atualizar o Gráfico de Rosca
                 if (statsChart) {
                     statsChart.data.datasets[0].data = [valid, invalid, errors, totalInQueue];
                     statsChart.data.datasets[0].backgroundColor = ['#00a884', '#f43f5e', '#f59e0b', '#2a3942'];
@@ -1169,7 +1155,6 @@
             
             let filtered = completedList;
 
-            // Filtros Estendidos (Válidos, Inválidos, Móvel e Fixo)
             if (currentFilter === 'valid') {
                 filtered = filtered.filter(n => n.status === 'valid');
             } else if (currentFilter === 'invalid') {
@@ -1198,7 +1183,6 @@
                 return;
             }
 
-            // Exibir primeiro os contactos mais recentes no topo
             const tableRows = [...filtered].reverse().map(item => {
                 let statusBadge = '';
                 
@@ -1212,7 +1196,6 @@
                     statusBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/10 text-amber-500 border border-amber-500/20" title="${item.error || 'Erro'}">⚠️ Falha</span>`;
                 }
 
-                // Selos visuais para classificação de Móvel e Fixo
                 let typeBadge = '';
                 if (item.type === 'mobile') {
                     typeBadge = `<span class="ml-2 text-[9px] bg-brand-500/10 text-brand-500 border border-brand-500/20 px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">📱 Móvel</span>`;
